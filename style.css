@@ -6,13 +6,39 @@
 body {
   margin: 0;
   background-color: #1e1e1e;
-  color: #df5050;
   height: 100vh;
   display: flex;
-  align-items: top;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
 #antimatter-display {
   font-size: 40px;
+  color: #df5050;
+  margin-bottom: 40px;
+}
+
+.dimension-row {
+  font-size: 25px;
+  color: #ffffff;
+  display: flex;
+  align-self: flex-start;
+  margin-left: 40px;
+}
+
+#dimension1-multiplier {
+  margin-left: 100px;
+}
+
+#dimension1-amount {
+  margin-left: 100px;
+}
+
+#dimension1-buy-button {
+  margin-left: 100px;
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
 }
