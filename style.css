@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #1e1e1e;
+  color: #df5050;
+  height: 100vh;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+
+#antimatter-display {
+  font-size: 40px;
+}
