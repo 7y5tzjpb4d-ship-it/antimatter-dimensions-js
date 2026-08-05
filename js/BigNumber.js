@@ -1,10 +1,16 @@
+// 巨大数を扱うためのクラス
 export class BigNumber {
+  // コンストラクタ
+  // mantissa:仮数部
+  // exponent;指数部
   constructor(mantissa, exponent = 0) {
     this.mantissa = mantissa;
     this.exponent = exponent;
     this.normalize();
   }
 
+  // 正規化
+  // 仮数部を1以上10未満に調整する
   normalize() {
     if (this.mantissa === 0) {
       this.exponent = 0;
@@ -22,6 +28,7 @@ export class BigNumber {
     }
   }
 
+  // 足し算
   add(other) {
     if (this.exponent === other.exponent) {
       return new BigNumber(this.mantissa + other.mantissa, this.exponent);
@@ -42,6 +49,7 @@ export class BigNumber {
     }
   }
 
+  // 引き算
   subtract(other) {
     if (other.exponent - this.exponent >= 15) {
       return new BigNumber(-other.mantissa, other.exponent);
@@ -58,6 +66,7 @@ export class BigNumber {
     }
   }
 
+  // 掛け算
   multiply(other) {
     if (other instanceof BigNumber) {
       return new BigNumber(this.mantissa * other.mantissa, this.exponent + other.exponent);
@@ -65,6 +74,7 @@ export class BigNumber {
     return new BigNumber(this.mantissa * other, this.exponent);
   }
 
+  // 割り算
   divide(other) {
     if (other instanceof BigNumber) {
       if (other.mantissa === 0) {
@@ -78,6 +88,7 @@ export class BigNumber {
     return new BigNumber(this.mantissa / other, this.exponent);
   }
 
+  // 累乗
   power(num) {
     if (num === 0) {
       return new BigNumber(1);
@@ -85,6 +96,7 @@ export class BigNumber {
     return new BigNumber(this.mantissa ** num, this.exponent * num);
   }
 
+  // 以上以下
   greaterThanOrEqual(other) {
     if (this.exponent === other.exponent) {
       return this.mantissa >= other.mantissa;
@@ -92,6 +104,7 @@ export class BigNumber {
     return this.exponent >= other.exponent;
   }
 
+  // 大なり小なり
   greaterThan(other) {
     if (this.exponent === other.exponent) {
       return this.mantissa > other.mantissa;
@@ -99,6 +112,7 @@ export class BigNumber {
     return this.exponent > other.exponent;
   }
 
+  // 常用対数
   log10() {
     if (this.mantissa === 0) {
       throw new Error("log10(0) is undefined");
@@ -106,6 +120,8 @@ export class BigNumber {
     return this.exponent + Math.log10(this.mantissa);
   }
 
+  // 指定の桁数分、少数以下を表示する
+  // digits:小数点以下表示桁数
   toDisplayString(digits) {
     if (this.exponent < 3) {
       return (this.mantissa * 10 ** this.exponent).toLocaleString(undefined, {

@@ -22,21 +22,69 @@ body {
 .dimension-row {
   font-size: 25px;
   color: #ffffff;
-  display: flex;
-  align-self: flex-start;
+  display: grid;
+  grid-template-columns:
+    minmax(250px, 3fr)
+    minmax(150px, 2fr)
+    minmax(150px, 2fr)
+    minmax(180px, 2fr);
+  gap: 15px;
+  align-items: center;
+  width: 100%;
   margin-left: 40px;
-}
-
-#dimension1-multiplier {
-  margin-left: 100px;
-}
-
-#dimension1-amount {
-  margin-left: 100px;
+  margin-bottom: 20px;
 }
 
 #dimension1-buy-button {
-  margin-left: 100px;
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension2-buy-button {
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension3-buy-button {
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension4-buy-button {
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension5-buy-button {
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension6-buy-button {
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension7-buy-button {
+  background-color: #df5050;
+  border: #df5050;
+  color: #ffffff;
+  width: 150px;
+}
+
+#dimension8-buy-button {
   background-color: #df5050;
   border: #df5050;
   color: #ffffff;
