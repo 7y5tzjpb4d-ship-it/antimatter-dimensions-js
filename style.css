@@ -35,58 +35,16 @@ body {
   margin-bottom: 20px;
 }
 
-#dimension1-buy-button {
-  background-color: #df5050;
-  border: #df5050;
+.dimension-buy-button {
+  border: none;
   color: #ffffff;
   width: 150px;
 }
 
-#dimension2-buy-button {
-  background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
+.can-buy {
+  background-color: #138626;
 }
 
-#dimension3-buy-button {
+.cannot-buy {
   background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
-}
-
-#dimension4-buy-button {
-  background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
-}
-
-#dimension5-buy-button {
-  background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
-}
-
-#dimension6-buy-button {
-  background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
-}
-
-#dimension7-buy-button {
-  background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
-}
-
-#dimension8-buy-button {
-  background-color: #df5050;
-  border: #df5050;
-  color: #ffffff;
-  width: 150px;
 }

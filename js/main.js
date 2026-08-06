@@ -73,9 +73,11 @@ const dimensions = [
 ];
 
 for (let i = 0; i < dimensions.length; i++) {
+  // Dimensinのコスト取得
+  const cost = dimensions[i].current_cost();
   dimension_buy_button[i].addEventListener("click", ()=>{
-    if (antimatter.greaterThanOrEqual(dimensions[i].current_cost())) {
-    antimatter = antimatter.subtract(dimensions[i].current_cost());
+    if (antimatter.greaterThanOrEqual(cost)) {
+    antimatter = antimatter.subtract(cost);
     dimensions[i].buy_dimension();
     }
   });
@@ -98,26 +100,36 @@ function gameLoop(timestamp) {
 
 function update(dt) {
   for (let i = dimensions.length - 1; i > 0; i--) {
-    dimensions[i-1].amount = dimensions[i-1].amount.add(dimensions[i].amount.multiply(dimensions[i].multiplier.multiply(dt).multiply(0.1)));
+    dimensions[i-1].amount = dimensions[i-1].amount.add(dimensions[i].amount
+      .multiply(dimensions[i].multiplier
+      .multiply(dt)
+      .multiply(0.1)));
   }
-  antimatter = antimatter.add(dimensions[0].amount.multiply(dimensions[0].multiplier).multiply(dt));
+  antimatter = antimatter.add(dimensions[0].amount
+    .multiply(dimensions[0].multiplier)
+    .multiply(dt));
 }
 
 function render() {
   antimatterDisplay.textContent = `${antimatter.toDisplayString(1)} Antimatter`;
 
   for (let i = 0; i < dimensions.length; i++) {
+    // Dimensionのコスト取得
+    const cost = dimensions[i].current_cost();
+    // 各Dimensionのテキスト
     dimension_multiplier[i].textContent = `x${dimensions[i].multiplier.toDisplayString(0)}`;
     dimension_amount[i].textContent = dimensions[i].amount.toDisplayString(0);
     dimension_buy_count[i].textContent = `Buy 1`;
-    dimension_cost[i].textContent = `Cost: ${dimensions[i].current_cost().toDisplayString(0)}`;
-  }
+    dimension_cost[i].textContent = `Cost: ${cost.toDisplayString(0)}`;
 
-  for (let i = 0; i < dimensions.length; i++) {
-    if (antimatter.greaterThanOrEqual(dimensions[i].current_cost())) {
-      dimension_buy_button[i].style.background = '#138626';
+    // ボタンの色クラスをリセット
+    dimension_buy_button[i].classList.remove("can-buy", "cannot-buy");
+    
+    // ボタンの色を購入可否によって変更
+    if (antimatter.greaterThanOrEqual(cost)) {
+      dimension_buy_button[i].classList.add("can-buy");
     } else {
-      dimension_buy_button[i].style.background = '#df5050';
+      dimension_buy_button[i].classList.add("cannot-buy");
     }
   }
 }
