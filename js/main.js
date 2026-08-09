@@ -73,12 +73,11 @@ const dimensions = [
 ];
 
 for (let i = 0; i < dimensions.length; i++) {
-  // Dimensinのコスト取得
-  const cost = dimensions[i].current_cost();
   dimension_buy_button[i].addEventListener("click", ()=>{
-    if (antimatter.greaterThanOrEqual(cost)) {
-    antimatter = antimatter.subtract(cost);
-    dimensions[i].buy_dimension();
+    if (antimatter.greaterThanOrEqual(dimensions[i].current_cost())) {
+      let count = dimensions[i].buy_count(antimatter);
+      antimatter = antimatter.subtract(dimensions[i].current_cost().multiply(count));
+      dimensions[i].buy_dimensions(count);
     }
   });
 }
@@ -100,14 +99,9 @@ function gameLoop(timestamp) {
 
 function update(dt) {
   for (let i = dimensions.length - 1; i > 0; i--) {
-    dimensions[i-1].amount = dimensions[i-1].amount.add(dimensions[i].amount
-      .multiply(dimensions[i].multiplier
-      .multiply(dt)
-      .multiply(0.1)));
+    dimensions[i-1].amount = dimensions[i-1].amount.add(dimensions[i].produce(dt, dimensions[i].tier));
   }
-  antimatter = antimatter.add(dimensions[0].amount
-    .multiply(dimensions[0].multiplier)
-    .multiply(dt));
+  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier));
 }
 
 function render() {
@@ -116,11 +110,16 @@ function render() {
   for (let i = 0; i < dimensions.length; i++) {
     // Dimensionのコスト取得
     const cost = dimensions[i].current_cost();
+    const count = dimensions[i].buy_count(antimatter);
     // 各Dimensionのテキスト
     dimension_multiplier[i].textContent = `x${dimensions[i].multiplier.toDisplayString(0)}`;
     dimension_amount[i].textContent = dimensions[i].amount.toDisplayString(0);
-    dimension_buy_count[i].textContent = `Buy 1`;
-    dimension_cost[i].textContent = `Cost: ${cost.toDisplayString(0)}`;
+    dimension_buy_count[i].textContent = `Buy ${count}`;
+    if (count < 1) { // 買えない場合
+      dimension_cost[i].textContent = `Cost: ${cost.toDisplayString(0)}`;
+    } else { // 買える場合
+      dimension_cost[i].textContent = `Cost: ${(cost.multiply(count)).toDisplayString(0)}`;
+    }
 
     // ボタンの色クラスをリセット
     dimension_buy_button[i].classList.remove("can-buy", "cannot-buy");

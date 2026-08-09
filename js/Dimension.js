@@ -24,13 +24,64 @@ export class Dimension {
     return this.cost.multiply(this.cost_multiplier.power(Math.floor(this.bought / 10)));
   }
 
-  // Dimension購入時の処理
-  buy_dimension() {
-    this.amount = this.amount.add(new BigNumber(1));
-    this.bought++;
+  // 次の10の倍数までDimensionを購入
+  buy_dimensions(count) {
 
-    if (this.bought % 10 === 0) {
-        this.multiplier = this.multiplier.multiply(new BigNumber(2));
+    for (let i = 0; i < count; i++) {
+        this.amount = this.amount.add(new BigNumber(1));
+        this.bought++;
+
+        if (this.bought % 10 === 0) {
+            this.multiplier = this.multiplier.multiply(new BigNumber(2))
+        }
+    }
+  }
+
+  // 次の10の倍数まで買える数を計算
+  next_multiple_need() {
+    return 10 - this.bought % 10;
+  }
+
+  // 現在の所持antimatterで買える数を計算
+  buyable_count(antimatter) {
+    let count = 0;
+
+    // 計算に必要な値のコピーを作成
+    let temp_antimatter = antimatter;
+    let temp_cost = this.current_cost();
+    let temp_bought = this.bought;
+
+    while (temp_antimatter.greaterThanOrEqual(temp_cost)) {
+        temp_antimatter = temp_antimatter.subtract(temp_cost);
+
+        count++;
+        temp_bought++;
+
+        if (temp_bought % 10 === 0) {
+            temp_cost = temp_cost.multiply(this.cost_multiplier);
+        }
+    }
+
+    return count;
+  } 
+
+  // 購入可能数を計算
+  buy_count(antimatter) {
+    return Math.min(this.next_multiple_need(), this.buyable_count(antimatter));
+  }
+
+  // Dimensionの生産量を計算
+  produce(dt, tier) {
+    let result;
+
+    result = this.amount
+      .multiply(this.multiplier
+      .multiply(dt));
+    
+    if (tier === 1) {
+        return result;
+    } else {
+        return result.multiply(0.1);
     }
   }
 }
