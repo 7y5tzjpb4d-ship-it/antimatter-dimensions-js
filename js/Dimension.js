@@ -17,6 +17,10 @@ export class Dimension {
     this.bought = 0;
     // Dimensionの倍率
     this.multiplier = new BigNumber(1);
+
+    // リセット用に値を保持しておくための変数
+    this._initial_cost = new BigNumber(cost.mantissa, cost.exponent)
+    this._initial_cost_multiplier = new BigNumber(cost_multiplier.mantissa, cost_multiplier.exponent)
   }
 
   // 現在のDimensionのコスト
@@ -24,7 +28,7 @@ export class Dimension {
     return this.cost.multiply(this.cost_multiplier.power(Math.floor(this.bought / 10)));
   }
 
-  // 次の10の倍数までDimensionを購入
+  // countの数だけDimensionを購入
   buy_dimensions(count) {
 
     for (let i = 0; i < count; i++) {
@@ -32,9 +36,19 @@ export class Dimension {
         this.bought++;
 
         if (this.bought % 10 === 0) {
-            this.multiplier = this.multiplier.multiply(new BigNumber(2))
+            this.multiplier = this.multiplier.multiply(new BigNumber(2));
         }
     }
+  }
+
+  // リセット処理
+  reset(boost) {
+    this.cost = this._initial_cost;
+    this.cost_multiplier = this._initial_cost_multiplier;
+
+    this.amount = new BigNumber(0);
+    this.bought = 0;
+    this.multiplier = new BigNumber(1);
   }
 
   // 次の10の倍数まで買える数を計算
