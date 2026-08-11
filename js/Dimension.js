@@ -42,7 +42,7 @@ export class Dimension {
   }
 
   // リセット処理
-  reset(boost) {
+  reset() {
     this.cost = this._initial_cost;
     this.cost_multiplier = this._initial_cost_multiplier;
 
@@ -86,9 +86,8 @@ export class Dimension {
 
   // Dimensionの生産量を計算
   produce(dt, tier) {
-    let result;
 
-    result = this.amount
+    const result = this.amount
       .multiply(this.multiplier
       .multiply(dt));
     

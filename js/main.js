@@ -6,7 +6,7 @@ let antimatter = new BigNumber(10);
 
 const antimatterDisplay = document.getElementById("antimatter-display");
 
-const dimension_multiplier = [
+const dimensionMultiplier = [
   document.getElementById("dimension1-multiplier"),
   document.getElementById("dimension2-multiplier"),
   document.getElementById("dimension3-multiplier"),
@@ -17,7 +17,7 @@ const dimension_multiplier = [
   document.getElementById("dimension8-multiplier")
 ];
 
-const dimension_amount = [
+const dimensionAmount = [
   document.getElementById("dimension1-amount"),
   document.getElementById("dimension2-amount"),
   document.getElementById("dimension3-amount"),
@@ -28,7 +28,7 @@ const dimension_amount = [
   document.getElementById("dimension8-amount")
 ];
 
-const dimension_buy_count = [
+const dimensionBuyCount = [
   document.getElementById("dimension1-buy-count"),
   document.getElementById("dimension2-buy-count"),
   document.getElementById("dimension3-buy-count"),
@@ -39,7 +39,7 @@ const dimension_buy_count = [
   document.getElementById("dimension8-buy-count")
 ];
 
-const dimension_cost = [
+const dimensionCost = [
   document.getElementById("dimension1-cost"),
   document.getElementById("dimension2-cost"),
   document.getElementById("dimension3-cost"),
@@ -50,7 +50,7 @@ const dimension_cost = [
   document.getElementById("dimension8-cost")
 ];
 
-const dimension_buy_button = [
+const dimensionBuyButton = [
   document.getElementById("dimension1-buy-button"),
   document.getElementById("dimension2-buy-button"),
   document.getElementById("dimension3-buy-button"),
@@ -61,7 +61,7 @@ const dimension_buy_button = [
   document.getElementById("dimension8-buy-button")
 ];
 
-const dimension_row = [
+const dimensionRow = [
   document.getElementById("dimension1-row"),
   document.getElementById("dimension2-row"),
   document.getElementById("dimension3-row"),
@@ -71,12 +71,12 @@ const dimension_row = [
   document.getElementById("dimension7-row"),
   document.getElementById("dimension8-row")
 ];
-const dimension_boost_count = document.getElementById("dimension-boost-count");
-const dimension_boost_requires = document.getElementById("dimension-boost-requires");
-const dimension_boost_button_requires = document.getElementById("dimension-boost-button-requires");
-const dimension_boost_button_multiplier = document.getElementById("dimension-boost-button-multiplier");
+const dimensionBoostCount = document.getElementById("dimension-boost-count");
+const dimensionBoostRequires = document.getElementById("dimension-boost-requires");
+const dimensionBoostButtonRequires = document.getElementById("dimension-boost-button-requires");
+const dimensionBoostButtonMultiplier = document.getElementById("dimension-boost-button-multiplier");
 
-const dimension_boost_button = document.getElementById("dimension-boost-button");
+const dimensionBoostButton = document.getElementById("dimension-boost-button");
 
 // 各dimensions
 const dimensions = [
@@ -89,11 +89,11 @@ const dimensions = [
   new Dimension(new BigNumber(1, 18), new BigNumber(1, 12), 7),
   new Dimension(new BigNumber(1, 24), new BigNumber(1, 15), 8)
 ];
-const dimension_boost = new DimensionBoost();
+const dimensionBoost = new DimensionBoost();
 
 for (let i = 0; i < dimensions.length; i++) {
-  dimension_buy_button[i].addEventListener("click", ()=>{
-    if (dimensions[i].tier <= dimension_boost.max_unlocked_tier()) {
+  dimensionBuyButton[i].addEventListener("click", ()=>{
+    if (dimensions[i].tier <= dimensionBoost.max_unlocked_tier()) {
       const count = dimensions[i].buy_count(antimatter);
       if (count > 0) {
         antimatter = antimatter.subtract(dimensions[i].current_cost().multiply(count));
@@ -103,8 +103,8 @@ for (let i = 0; i < dimensions.length; i++) {
   });
 }
 
-dimension_boost_button.addEventListener("click", ()=>{
-  antimatter = dimension_boost.boost(dimensions, antimatter)
+dimensionBoostButton.addEventListener("click", ()=>{
+  antimatter = dimensionBoost.boost(dimensions, antimatter)
 });
 
 let lastTimestamp = null;
@@ -125,10 +125,10 @@ function gameLoop(timestamp) {
 function update(dt) {
   for (let i = dimensions.length - 1; i > 0; i--) {
     // 未解禁のDimensionは生産処理をしない
-    if (dimensions[i].tier <= dimension_boost.max_unlocked_tier()) {
+    if (dimensions[i].tier <= dimensionBoost.max_unlocked_tier()) {
       dimensions[i-1].amount = dimensions[i-1].amount.add(
         dimensions[i].produce(dt, dimensions[i].tier)
-        .multiply(dimension_boost.get_multiplier(dimensions[i].tier)));
+        .multiply(dimensionBoost.get_multiplier(dimensions[i].tier)));
     }
   }
   antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier));
@@ -144,57 +144,57 @@ function render() {
     const cost = dimensions[i].current_cost();
     const count = dimensions[i].buy_count(antimatter);
     // 各Dimensionのテキスト
-    dimension_multiplier[i].textContent = `x${dimensions[i].multiplier.toDisplayString(2)}`;
-    dimension_amount[i].textContent = dimensions[i].amount.toDisplayString(0);
-    dimension_buy_count[i].textContent = `Buy ${count}`;
+    dimensionMultiplier[i].textContent = `x${dimensions[i].multiplier.toDisplayString(2)}`;
+    dimensionAmount[i].textContent = dimensions[i].amount.toDisplayString(0);
+    dimensionBuyCount[i].textContent = `Buy ${count}`;
     if (count < 1) { // 買えない場合
-      dimension_cost[i].textContent = `Cost: ${cost.toDisplayString(0)}`;
+      dimensionCost[i].textContent = `Cost: ${cost.toDisplayString(0)}`;
     } else { // 買える場合
-      dimension_cost[i].textContent = `Cost: ${(cost.multiply(count)).toDisplayString(0)}`;
+      dimensionCost[i].textContent = `Cost: ${(cost.multiply(count)).toDisplayString(0)}`;
     }
 
     // ボタンの色クラスをリセット
-    dimension_buy_button[i].classList.remove("can-buy", "cannot-buy");
+    dimensionBuyButton[i].classList.remove("can-buy", "cannot-buy");
     
     // ボタンの色を購入可否によって変更
     if (antimatter.greaterThanOrEqual(cost)) {
-      dimension_buy_button[i].classList.add("can-buy");
+      dimensionBuyButton[i].classList.add("can-buy");
     } else {
-      dimension_buy_button[i].classList.add("cannot-buy");
+      dimensionBuyButton[i].classList.add("cannot-buy");
     }
 
     // Dimensionの表示非表示
     if (i > 0) {
       if (dimensions[i-1].bought <= 0) {
-        dimension_row[i].classList.add("hide");
+        dimensionRow[i].classList.add("hide");
       } else {
-        dimension_row[i].classList.remove("hide");
+        dimensionRow[i].classList.remove("hide");
       }
     }
   }
 
   // DimensionBoostの描画
-  const tier = dimension_boost.max_unlocked_tier();
-  dimension_boost_count.textContent = `Dimension Boost (${dimension_boost.boosts})`;
-  dimension_boost_requires.textContent = `Requires: ${dimension_boost.required_amount()} ${tier}th Antimatter D`;
-  dimension_boost_button_requires.textContent = `${tier}th Dimension and give a ×2.0`;
+  const tier = dimensionBoost.max_unlocked_tier();
+  dimensionBoostCount.textContent = `Dimension Boost (${dimensionBoost.boosts})`;
+  dimensionBoostRequires.textContent = `Requires: ${dimensionBoost.required_amount()} ${tier}th Antimatter D`;
+  dimensionBoostButtonRequires.textContent = `${tier}th Dimension and give a ×2.0`;
 
-  if (dimension_boost.boosts === 0) {
-    dimension_boost_button_multiplier.textContent = `multiplier to the 1st Dimension`;
-  } else if (dimension_boost.boosts <= 6) {
-    dimension_boost_button_multiplier.textContent = `multiplier to Dimensions 1-${dimension_boost.boosts + 1}`;
+  if (dimensionBoost.boosts === 0) {
+    dimensionBoostButtonMultiplier.textContent = `multiplier to the 1st Dimension`;
+  } else if (dimensionBoost.boosts <= 6) {
+    dimensionBoostButtonMultiplier.textContent = `multiplier to Dimensions 1-${dimensionBoost.boosts + 1}`;
   } else {
-    dimension_boost_button_multiplier.textContent = `multiplier to all Dimensions`;
+    dimensionBoostButtonMultiplier.textContent = `multiplier to all Dimensions`;
   }
 
   // ボタンの色クラスをリセット
-  dimension_boost_button.classList.remove("can-boost", "cannot-boost");
+  dimensionBoost.classList.remove("can-boost", "cannot-boost");
     
   // ボタンの色をDimensionBoost可否によって変更
-  if (dimension_boost.can_boost(dimensions)) {
-    dimension_boost_button.classList.add("can-boost");
+  if (dimensionBoost.can_boost(dimensions)) {
+    dimensionBoost.classList.add("can-boost");
   } else {
-    dimension_boost_button.classList.add("cannot-boost");
+    dimensionBoost.classList.add("cannot-boost");
   }
 }
 
