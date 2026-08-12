@@ -16,7 +16,7 @@ body {
 #antimatter-display {
   font-size: 40px;
   color: #df5050;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .dimension-row {
@@ -53,6 +53,10 @@ body {
   display: none;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .dimension-boost {
   color: #ffffff;
   display: flex;
@@ -78,6 +82,27 @@ body {
 }
 
 .cannot-boost {
+  background-color: #df5050;
+  border: none;
+}
+
+.tickspeed {
+  margin-bottom: 20px;
+}
+
+.tickspeed-button {
+  width: 250px;
+  color: #ffffff;
+  background-color: #df5050;
+  border: none;
+}
+
+.can-tickspeed {
+  background-color: #1d1b22;
+  border: 1px solid #138626;
+}
+
+.cannot-tickspeed {
   background-color: #df5050;
   border: none;
 }

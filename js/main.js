@@ -1,5 +1,6 @@
 import { BigNumber } from "./BigNumber.js";
 import { Dimension } from "./Dimension.js";
+import { TickSpeed } from "./TickSpeed.js";
 import { DimensionBoost } from "./DimensionBoost.js";
 
 let antimatter = new BigNumber(10);
@@ -71,11 +72,14 @@ const dimensionRow = [
   document.getElementById("dimension7-row"),
   document.getElementById("dimension8-row")
 ];
+const tickSpeedClass = document.getElementById("tickspeed");
+const tickSpeedCostClass = document.getElementById("tickspeed-cost");
 const dimensionBoostCount = document.getElementById("dimension-boost-count");
 const dimensionBoostRequires = document.getElementById("dimension-boost-requires");
 const dimensionBoostButtonRequires = document.getElementById("dimension-boost-button-requires");
 const dimensionBoostButtonMultiplier = document.getElementById("dimension-boost-button-multiplier");
 
+const tickSpeedButton = document.getElementById("tickspeed-button");
 const dimensionBoostButton = document.getElementById("dimension-boost-button");
 
 // 各dimensions
@@ -89,6 +93,7 @@ const dimensions = [
   new Dimension(new BigNumber(1, 18), new BigNumber(1, 12), 7),
   new Dimension(new BigNumber(1, 24), new BigNumber(1, 15), 8)
 ];
+const tickSpeed = new TickSpeed(new BigNumber(1, 3), new BigNumber(1, 1));
 const dimensionBoost = new DimensionBoost();
 
 for (let i = 0; i < dimensions.length; i++) {
@@ -103,8 +108,17 @@ for (let i = 0; i < dimensions.length; i++) {
   });
 }
 
+tickSpeedButton.addEventListener("click", ()=>{
+  const cost = tickSpeed.current_cost();
+
+  if (antimatter.greaterThanOrEqual(cost)) {
+    tickSpeed.buy_tickspeed();
+    antimatter = antimatter.subtract(cost);
+  }
+});
+
 dimensionBoostButton.addEventListener("click", ()=>{
-  antimatter = dimensionBoost.boost(dimensions, antimatter)
+  antimatter = dimensionBoost.boost(dimensions, antimatter, tickSpeed);
 });
 
 let lastTimestamp = null;
@@ -128,13 +142,18 @@ function update(dt) {
     if (dimensions[i].tier <= dimensionBoost.max_unlocked_tier()) {
       dimensions[i-1].amount = dimensions[i-1].amount.add(
         dimensions[i].produce(dt, dimensions[i].tier)
-        .multiply(dimensionBoost.get_multiplier(dimensions[i].tier)));
+        .multiply(dimensionBoost.get_multiplier(dimensions[i].tier))
+        .multiply(tickSpeed.multiplier));
     }
   }
-  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier));
+  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier).multiply(new BigNumber(1, 100)));
+  console.log(tickSpeed.multiplier.toDisplayString(5));
 }
 
 function render() {
+  // 必要な値をあらかじめ取得
+  const tier = dimensionBoost.max_unlocked_tier();
+  const tickSpeedCost = tickSpeed.current_cost();
   // antimatterの描画
   antimatterDisplay.textContent = `${antimatter.toDisplayString(1)} Antimatter`;
 
@@ -165,7 +184,7 @@ function render() {
 
     // Dimensionの表示非表示
     if (i > 0) {
-      if (dimensions[i-1].bought <= 0) {
+      if ((dimensionBoost.boosts <= 0 && dimensions[i-1].bought <= 0) || !(dimensions[i].tier <= tier)) {
         dimensionRow[i].classList.add("hide");
       } else {
         dimensionRow[i].classList.remove("hide");
@@ -173,8 +192,27 @@ function render() {
     }
   }
 
+  // tickspeedの描画
+  // 2nd Dimension解禁時にボタン表示する
+  if (dimensions[0].bought < 1) {
+    tickSpeedClass.classList.add("hidden");
+  } else {
+    tickSpeedClass.classList.remove("hidden");
+  }
+
+  tickSpeedCostClass.textContent = `Tickspeed Cost: ${tickSpeed.current_cost().toDisplayString(0)}`;
+
+  // ボタンの色クラスをリセット
+  tickSpeedButton.classList.remove("can-tickspeed", "cannot-tickspeed");
+    
+  // ボタンの色をtickspeed購入可否によって変更
+  if (antimatter.greaterThanOrEqual(tickSpeedCost)) {
+    tickSpeedButton.classList.add("can-tickspeed");
+  } else {
+    tickSpeedButton.classList.add("cannot-tickspeed");
+  }
+
   // DimensionBoostの描画
-  const tier = dimensionBoost.max_unlocked_tier();
   dimensionBoostCount.textContent = `Dimension Boost (${dimensionBoost.boosts})`;
   dimensionBoostRequires.textContent = `Requires: ${dimensionBoost.required_amount()} ${tier}th Antimatter D`;
   dimensionBoostButtonRequires.textContent = `${tier}th Dimension and give a ×2.0`;
@@ -188,13 +226,13 @@ function render() {
   }
 
   // ボタンの色クラスをリセット
-  dimensionBoost.classList.remove("can-boost", "cannot-boost");
+  dimensionBoostButton.classList.remove("can-boost", "cannot-boost");
     
   // ボタンの色をDimensionBoost可否によって変更
   if (dimensionBoost.can_boost(dimensions)) {
-    dimensionBoost.classList.add("can-boost");
+    dimensionBoostButton.classList.add("can-boost");
   } else {
-    dimensionBoost.classList.add("cannot-boost");
+    dimensionBoostButton.classList.add("cannot-boost");
   }
 }
 

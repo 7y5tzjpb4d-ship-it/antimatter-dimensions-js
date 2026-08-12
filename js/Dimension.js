@@ -19,8 +19,8 @@ export class Dimension {
     this.multiplier = new BigNumber(1);
 
     // リセット用に値を保持しておくための変数
-    this._initial_cost = new BigNumber(cost.mantissa, cost.exponent)
-    this._initial_cost_multiplier = new BigNumber(cost_multiplier.mantissa, cost_multiplier.exponent)
+    this._initial_cost = new BigNumber(cost.mantissa, cost.exponent);
+    this._initial_cost_multiplier = new BigNumber(cost_multiplier.mantissa, cost_multiplier.exponent);
   }
 
   // 現在のDimensionのコスト

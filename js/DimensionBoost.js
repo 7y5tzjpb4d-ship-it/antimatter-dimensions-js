@@ -35,7 +35,7 @@ export class DimensionBoost {
   }
 
   // DimensionBoostの実処理
-  boost (dimensions, antimatter) {
+  boost (dimensions, antimatter, tickSpeed) {
     // DimensionBoost不可の場合何もせず終了
     if (!this.can_boost(dimensions)) {
         return antimatter;
@@ -48,6 +48,8 @@ export class DimensionBoost {
         // 倍率の更新
         dimensions[i].multiplier = dimensions[i].multiplier.multiply(this.get_multiplier(dimensions[i].tier));
     }
+
+    tickSpeed.reset();
 
     return new BigNumber(10);
   }
