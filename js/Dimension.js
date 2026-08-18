@@ -84,6 +84,34 @@ export class Dimension {
     return Math.min(this.nextMultipleNeed(), this.buyableCount(antimatter));
   }
 
+  // MaxAllボタンでの最大購入
+  buyMax(antimatter) {
+    let cost = this.currentCost();
+    let remainingInBlock = this.nextMultipleNeed();
+
+    while(true) {
+      const blockCost = cost.multiply(remainingInBlock);
+      if(antimatter.greaterThanOrEqual(blockCost)) {
+        antimatter = antimatter.subtract(blockCost);
+        this.buyDimensions(remainingInBlock);
+        cost = this.currentCost();  // bought % 10 == 0 で自動的に次のコストになる
+        remainingInBlock = 10;
+      } else {
+        let n = 0;
+        while(antimatter.greaterThanOrEqual(cost) && n < remainingInBlock) {
+          antimatter = antimatter.subtract(cost);
+          n++;
+        }
+        if (n > 0) {
+          this.buyDimensions(n);
+        }
+        break;
+      }
+    }
+
+    return antimatter;
+  }
+  
   // Dimensionの生産量を計算
   produce(dt, tier) {
 

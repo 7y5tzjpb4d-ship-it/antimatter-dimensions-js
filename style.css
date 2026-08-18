@@ -111,6 +111,23 @@ body {
   margin-bottom: 20px;
 }
 
+.max-all-button {
+  width: 100px;
+  color: #ffffff;
+  background-color: #df5050;
+  border: none;
+}
+
+.can-max-all {
+  background-color: #1d1b22;
+  border: 1px solid #138626;
+}
+
+.cannot-max-all {
+  background-color: #df5050;
+  border: none;
+}
+
 .sacrifice-button {
   width: 450px;
   color: #ffffff;
@@ -121,6 +138,23 @@ body {
 .tickspeed-button {
   width: 350px;
   color: #ffffff;
+  background-color: #df5050;
+  border: none;
+}
+
+.tickspeed-max-button {
+  width: 100px;
+  color: #ffffff;
+  background-color: #df5050;
+  border: none;
+}
+
+.can-tickspeed {
+  background-color: #1d1b22;
+  border: 1px solid #138626;
+}
+
+.cannot-tickspeed {
   background-color: #df5050;
   border: none;
 }

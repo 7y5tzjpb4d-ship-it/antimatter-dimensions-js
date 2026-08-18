@@ -84,7 +84,9 @@ const galaxyCount = document.getElementById("galaxy-count");
 const galaxyRequires = document.getElementById("galaxy-requires");
 const sacrificeText = document.getElementById("sacrifice-text");
 
+const maxAllButton = document.getElementById("max-all-button");
 const tickSpeedButton = document.getElementById("tickspeed-button");
+const tickSpeedMaxButton = document.getElementById("tickspeed-max-button");
 const dimensionBoostButton = document.getElementById("dimension-boost-button");
 const galaxyButton = document.getElementById("galaxy-button");
 const sacrificeButton = document.getElementById("sacrifice-button");
@@ -117,12 +119,39 @@ for (let i = 0; i < dimensions.length; i++) {
   });
 }
 
+maxAllButton.addEventListener("click", ()=>{
+  let cost = tickSpeed.currentCost();
+  while(antimatter.greaterThanOrEqual(cost)) {
+    antimatter = antimatter.subtract(cost);
+    tickSpeed.buyTickspeed();
+    cost = tickSpeed.currentCost();
+  }
+
+  for(let i = 0; i < dimensions.length; i++) {
+    if(dimensions[i].tier > dimensionBoost.maxUnlockedTier()) {
+      continue;
+    }
+
+    antimatter = dimensions[i].buyMax(antimatter);
+  }
+});
+
 tickSpeedButton.addEventListener("click", ()=>{
   const cost = tickSpeed.currentCost();
 
   if (antimatter.greaterThanOrEqual(cost)) {
     tickSpeed.buyTickspeed();
     antimatter = antimatter.subtract(cost);
+  }
+});
+
+tickSpeedMaxButton.addEventListener("click", ()=>{
+  let cost = tickSpeed.currentCost();
+
+  while (antimatter.greaterThanOrEqual(cost)) {
+    antimatter = antimatter.subtract(cost);
+    tickSpeed.buyTickspeed();
+    cost = tickSpeed.currentCost();
   }
 });
 
@@ -155,7 +184,7 @@ function gameLoop(timestamp) {
 
 function update(dt) {
   // 生産処理の前にTickSpeed倍率の更新
-  tickSpeed.tickMultiplier = galaxy.getGalaxyMultiplier()
+  tickSpeed.tickMultiplier = galaxy.getGalaxyMultiplier();
   for (let i = dimensions.length - 1; i > 0; i--) {
     // 未解禁のDimensionは生産処理をしない
     if (dimensions[i].tier <= dimensionBoost.maxUnlockedTier()) {
@@ -165,13 +194,16 @@ function update(dt) {
         .multiply(tickSpeed.multiplier));
     }
   }
-  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier));
+  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier)
+        .multiply(dimensionBoost.getMultiplier(dimensions[0].tier))
+        .multiply(tickSpeed.multiplier));
 }
 
 function render() {
   // 必要な値をあらかじめ取得
   const tier = dimensionBoost.maxUnlockedTier();
   const tickSpeedCost = tickSpeed.currentCost();
+  let canBuyDimensions = false;
   // antimatterの描画
   antimatterDisplay.textContent = `${antimatter.toDisplayString(1)} Antimatter`;
 
@@ -188,6 +220,7 @@ function render() {
       dimensionCost[i].textContent = `Cost: ${cost.toDisplayString(0)}`;
     } else { // 買える場合
       dimensionCost[i].textContent = `Cost: ${(cost.multiply(count)).toDisplayString(0)}`;
+      canBuyDimensions = true;
     }
 
     // ボタンの色クラスをリセット
@@ -210,6 +243,15 @@ function render() {
     }
   }
 
+  // MaxAllボタンの描画
+  maxAllButton.classList.remove("can-max-all", "cannot-max-all");
+
+  if (canBuyDimensions || antimatter.greaterThanOrEqual(tickSpeedCost)) {
+    maxAllButton.classList.add("can-max-all");
+  } else {
+    maxAllButton.classList.add("cannot-max-all");
+  }
+
   // tickspeedの描画
   // 2nd Dimension解禁時にボタン表示する
   if (dimensions[0].bought < 1) {
@@ -222,12 +264,15 @@ function render() {
 
   // ボタンの色クラスをリセット
   tickSpeedButton.classList.remove("can-tickspeed", "cannot-tickspeed");
+  tickSpeedMaxButton.classList.remove("can-tickspeed", "cannot-tickspeed");
     
   // ボタンの色をtickspeed購入可否によって変更
   if (antimatter.greaterThanOrEqual(tickSpeedCost)) {
     tickSpeedButton.classList.add("can-tickspeed");
+    tickSpeedMaxButton.classList.add("can-tickspeed");
   } else {
     tickSpeedButton.classList.add("cannot-tickspeed");
+    tickSpeedMaxButton.classList.add("cannot-tickspeed");
   }
 
   // DimensionBoostの描画
