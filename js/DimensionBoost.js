@@ -63,4 +63,8 @@ export class DimensionBoost {
     }
   }
 
+  // DimensionBoostのリセット
+  reset() {
+    this.boosts = 0;
+  }
 }

@@ -1,7 +1,9 @@
 import { BigNumber } from "./BigNumber.js";
 import { Dimension } from "./Dimension.js";
+import { Sacrifice } from "./Sacrifice.js";
 import { TickSpeed } from "./TickSpeed.js";
 import { DimensionBoost } from "./DimensionBoost.js";
+import { Galaxy } from "./Galaxy.js";
 
 let antimatter = new BigNumber(10);
 
@@ -72,15 +74,21 @@ const dimensionRow = [
   document.getElementById("dimension7-row"),
   document.getElementById("dimension8-row")
 ];
-const tickSpeedClass = document.getElementById("tickspeed");
-const tickSpeedCostClass = document.getElementById("tickspeed-cost");
+const tickSpeedElement = document.getElementById("tickspeed");
+const tickSpeedCostElement = document.getElementById("tickspeed-cost");
 const dimensionBoostCount = document.getElementById("dimension-boost-count");
 const dimensionBoostRequires = document.getElementById("dimension-boost-requires");
 const dimensionBoostButtonRequires = document.getElementById("dimension-boost-button-requires");
 const dimensionBoostButtonMultiplier = document.getElementById("dimension-boost-button-multiplier");
+const galaxyCount = document.getElementById("galaxy-count");
+const galaxyRequires = document.getElementById("galaxy-requires");
+const sacrificeElement = document.getElementById("sacrifice");
+const sacrificeText = document.getElementById("sacrifice-text");
 
 const tickSpeedButton = document.getElementById("tickspeed-button");
 const dimensionBoostButton = document.getElementById("dimension-boost-button");
+const galaxyButton = document.getElementById("galaxy-button");
+const sacrificeButton = document.getElementById("sacrifice-button");
 
 // 各dimensions
 const dimensions = [
@@ -95,6 +103,8 @@ const dimensions = [
 ];
 const tickSpeed = new TickSpeed(new BigNumber(1, 3), new BigNumber(1, 1));
 const dimensionBoost = new DimensionBoost();
+const galaxy = new Galaxy();
+const sacrifice = new Sacrifice();
 
 for (let i = 0; i < dimensions.length; i++) {
   dimensionBuyButton[i].addEventListener("click", ()=>{
@@ -121,6 +131,14 @@ dimensionBoostButton.addEventListener("click", ()=>{
   antimatter = dimensionBoost.boost(dimensions, antimatter, tickSpeed);
 });
 
+galaxyButton.addEventListener("click", ()=>{
+  antimatter = galaxy.galaxy(dimensions, antimatter, tickSpeed, dimensionBoost);
+});
+
+sacrificeButton.addEventListener("click", ()=>{
+  antimatter = sacrifice.sacrifice(antimatter, dimensions, dimensionBoost);
+});
+
 let lastTimestamp = null;
 
 function gameLoop(timestamp) {
@@ -137,6 +155,8 @@ function gameLoop(timestamp) {
 }
 
 function update(dt) {
+  // 生産処理の前にTickSpeed倍率の更新
+  tickSpeed.tick_multiplier = galaxy.get_galaxy_multiplier()
   for (let i = dimensions.length - 1; i > 0; i--) {
     // 未解禁のDimensionは生産処理をしない
     if (dimensions[i].tier <= dimensionBoost.max_unlocked_tier()) {
@@ -146,8 +166,7 @@ function update(dt) {
         .multiply(tickSpeed.multiplier));
     }
   }
-  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier).multiply(new BigNumber(1, 100)));
-  console.log(tickSpeed.multiplier.toDisplayString(5));
+  antimatter = antimatter.add(dimensions[0].produce(dt, dimensions[0].tier));
 }
 
 function render() {
@@ -195,12 +214,12 @@ function render() {
   // tickspeedの描画
   // 2nd Dimension解禁時にボタン表示する
   if (dimensions[0].bought < 1) {
-    tickSpeedClass.classList.add("hidden");
+    tickSpeedElement.classList.add("hidden");
   } else {
-    tickSpeedClass.classList.remove("hidden");
+    tickSpeedElement.classList.remove("hidden");
   }
 
-  tickSpeedCostClass.textContent = `Tickspeed Cost: ${tickSpeed.current_cost().toDisplayString(0)}`;
+  tickSpeedCostElement.textContent = `Tickspeed Cost: ${tickSpeed.current_cost().toDisplayString(0)}`;
 
   // ボタンの色クラスをリセット
   tickSpeedButton.classList.remove("can-tickspeed", "cannot-tickspeed");
@@ -226,13 +245,46 @@ function render() {
   }
 
   // ボタンの色クラスをリセット
-  dimensionBoostButton.classList.remove("can-boost", "cannot-boost");
+  dimensionBoostButton.classList.remove("can-reset", "cannot-reset");
     
   // ボタンの色をDimensionBoost可否によって変更
   if (dimensionBoost.can_boost(dimensions)) {
-    dimensionBoostButton.classList.add("can-boost");
+    dimensionBoostButton.classList.add("can-reset");
   } else {
-    dimensionBoostButton.classList.add("cannot-boost");
+    dimensionBoostButton.classList.add("cannot-reset");
+  }
+
+  // Galaxyの描画
+  galaxyCount.textContent = `Antimatter Galaxies (${galaxy.galaxies})`;
+  galaxyRequires.textContent = `Requires: ${galaxy.required_amount()} 8th Antimatter D`;
+
+  // ボタンの色クラスをリセット
+  galaxyButton.classList.remove("can-reset", "cannot-reset");
+    
+  // ボタンの色をGalaxy可否によって変更
+  if (galaxy.can_galaxy(dimensions[7])) {
+    galaxyButton.classList.add("can-reset");
+  } else {
+    galaxyButton.classList.add("cannot-reset");
+  }
+
+  // Sacrificeの描画
+  if (dimensionBoost.boosts <= 4) {
+    sacrificeText.textContent = `Dimensional Sacrifice Disabled (Requires 5 Dimension Boosts)`;
+  } else if (dimensions[7].bought <= 0) {
+    sacrificeText.textContent = `Dimensional Sacrifice Disabled (No 8th Antimatter Dimensions)`;
+  } else {
+    sacrificeText.textContent = `Dimensional Sacrifice (x${sacrifice.next_gain(dimensions).toDisplayString(2)})`;
+  }
+
+  // ボタンの色クラスをリセット
+  sacrificeButton.classList.remove("can-reset", "cannot-reset");
+    
+  // ボタンの色をSacrifice可否によって変更
+  if (sacrifice.can_sacrifice(dimensions, dimensionBoost)) {
+    sacrificeButton.classList.add("can-reset");
+  } else {
+    sacrificeButton.classList.add("cannot-reset");
   }
 }
 

@@ -57,6 +57,16 @@ body {
   visibility: hidden;
 }
 
+.reset-buttons {
+  display: grid;
+  grid-template-columns:
+    minmax(300px, 1fr)
+    minmax(300px, 1fr);
+  gap: clamp(20px, 5vw, 100px);
+  width: min(1000px, 90%);
+  margin: 0 auto;
+}
+
 .dimension-boost {
   color: #ffffff;
   display: flex;
@@ -65,7 +75,17 @@ body {
   align-items: center;
   width: 300px;
   padding-left: 10px;
-  align-self: flex-start;
+  margin-top: 30px;
+}
+
+.galaxy {
+  color: #ffffff;
+  display: flex;
+  flex-flow: column;
+  gap: 25px;
+  align-items: center;
+  width: 300px;
+  padding-left: 10px;
   margin-top: 30px;
 }
 
@@ -76,33 +96,41 @@ body {
   width: 250px;
 }
 
-.can-boost {
-  background-color: #1d1b22;
-  border: 1px solid #138626;
-}
-
-.cannot-boost {
+.galaxy-button{
+  color: #ffffff;
   background-color: #df5050;
   border: none;
+  width: 250px;
 }
 
 .tickspeed {
   margin-bottom: 20px;
 }
 
-.tickspeed-button {
-  width: 250px;
+.sacrifice {
+  margin-bottom: 20px;
+}
+
+.sacrifice-button {
+  width: 450px;
   color: #ffffff;
   background-color: #df5050;
   border: none;
 }
 
-.can-tickspeed {
+.tickspeed-button {
+  width: 350px;
+  color: #ffffff;
+  background-color: #df5050;
+  border: none;
+}
+
+.can-reset {
   background-color: #1d1b22;
   border: 1px solid #138626;
 }
 
-.cannot-tickspeed {
+.cannot-reset {
   background-color: #df5050;
   border: none;
 }

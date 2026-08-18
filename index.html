@@ -12,6 +12,11 @@
       <div id="tickspeed-cost">Tickspeed Cost: 1e3</div>
     </button>
   </div>
+  <div class="sacrifice" id="sacrifice">
+    <button class="sacrifice-button" id="sacrifice-button">
+      <div id="sacrifice-text">Dimensional Sacrifice Disabled (Requires 5 Dimension Boosts)</div>
+    </button>
+  </div>
   <div class="dimension-row" id="dimension1-row">
     <div>1st Dimension</div>
     <div id="dimension1-multiplier">x1</div>
@@ -84,14 +89,25 @@
       <div id="dimension8-cost">Cost: 1e24 AM</div>
     </button>
   </div>
-  <div class="dimension-boost">
-    <div id="dimension-boost-count">Dimension Boost (0)</div>
-    <div id="dimension-boost-requires">Requires: 20 4th Antimatter D</div>
-    <button class="dimension-boost-button" id="dimension-boost-button">
-      <div>Reset your Dimensions to unlock the</div>
-      <div id="dimension-boost-button-requires">4th Dimension and give a ×2.0</div>
-      <div id="dimension-boost-button-multiplier">multiplier to the 1st Dimension</div>
-    </button>
+  <div class="reset-buttons">
+    <div class="dimension-boost">
+      <div id="dimension-boost-count">Dimension Boost (0)</div>
+      <div id="dimension-boost-requires">Requires: 20 4th Antimatter D</div>
+      <button class="dimension-boost-button" id="dimension-boost-button">
+        <div>Reset your Dimensions to unlock the</div>
+        <div id="dimension-boost-button-requires">4th Dimension and give a ×2.0</div>
+        <div id="dimension-boost-button-multiplier">multiplier to the 1st Dimension</div>
+      </button>
+    </div>
+    <div class="galaxy">
+      <div id="galaxy-count">Antimatter Galaxies (0)</div>
+      <div id="galaxy-requires">Requires: 80 8th Antimatter D</div>
+      <button class="galaxy-button" id="galaxy-button">
+        <div>Reset your Dimensions and Dimension</div>
+        <div>Boosts to increase the power of</div>
+        <div>Tickspeed upgrades</div>
+      </button>
+    </div>
   </div>
 
   <script src="js/main.js" type="module"></script>

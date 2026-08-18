@@ -17,6 +17,7 @@ export class TickSpeed {
     this.multiplier = new BigNumber(1);
     
     // リセット用に値を保持しておくための変数
+    this.tick_multiplier = new BigNumber(1);
     this._initial_cost = new BigNumber(cost.mantissa, cost.exponent);
     this._initial_cost_multiplier = new BigNumber(cost_multiplier.mantissa, cost_multiplier.exponent);
   }
@@ -31,7 +32,7 @@ export class TickSpeed {
     this.amount = this.amount.add(new BigNumber(1));
     this.bought++;
 
-    this.multiplier = this.multiplier.multiply(new BigNumber(1.1245));
+    this.multiplier = this.multiplier.multiply(this.tick_multiplier);
   }
 
   // リセット処理
