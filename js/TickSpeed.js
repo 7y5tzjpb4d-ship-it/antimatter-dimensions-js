@@ -4,10 +4,10 @@ import { BigNumber } from "./BigNumber.js";
 export class TickSpeed {
   // コンストラクタ
   // cost:コスト
-  // cost_multiplier:コスト上昇倍率
-  constructor(cost, cost_multiplier) {
+  // costMultiplier:コスト上昇倍率
+  constructor(cost, costMultiplier) {
     this.cost = cost;
-    this.cost_multiplier = cost_multiplier;
+    this.costMultiplier = costMultiplier;
     
     // tickspeedの個数
     this.amount = new BigNumber(0);
@@ -17,28 +17,28 @@ export class TickSpeed {
     this.multiplier = new BigNumber(1);
     
     // リセット用に値を保持しておくための変数
-    this.tick_multiplier = new BigNumber(1);
-    this._initial_cost = new BigNumber(cost.mantissa, cost.exponent);
-    this._initial_cost_multiplier = new BigNumber(cost_multiplier.mantissa, cost_multiplier.exponent);
+    this.tickMultiplier = new BigNumber(1);
+    this._initialCost = new BigNumber(cost.mantissa, cost.exponent);
+    this._initialCostMultiplier = new BigNumber(costMultiplier.mantissa, costMultiplier.exponent);
   }
 
   // 現在のtickspeedのコスト
-  current_cost() {
-    return this.cost.multiply(this.cost_multiplier.power(Math.floor(this.bought)));
+  currentCost() {
+    return this.cost.multiply(this.costMultiplier.power(Math.floor(this.bought)));
   }
 
   // tickspeed購入処理
-  buy_tickspeed() {
+  buyTickspeed() {
     this.amount = this.amount.add(new BigNumber(1));
     this.bought++;
 
-    this.multiplier = this.multiplier.multiply(this.tick_multiplier);
+    this.multiplier = this.multiplier.multiply(this.tickMultiplier);
   }
 
   // リセット処理
   reset() {
-    this.cost = this._initial_cost;
-    this.cost_multiplier = this._initial_cost_multiplier;
+    this.cost = this._initialCost;
+    this.costMultiplier = this._initialCostMultiplier;
 
     this.amount = new BigNumber(0);
     this.bought = 0;

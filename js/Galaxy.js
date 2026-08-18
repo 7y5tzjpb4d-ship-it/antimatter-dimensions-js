@@ -5,34 +5,27 @@ export class Galaxy {
   // コンストラクタ
   constructor() {
     this.galaxies = 0;
-    this.base_multipliers = [
+    this.baseMultipliers = [
         1/1.1245,
         1/1.11888888,
         1/1.11267177,
         0.8
     ];
-    this.galaxy_strength = 1;
   }
 
   // Galaxyできるか判定
-  can_galaxy(dimension) {
-    return dimension.bought >= this.required_amount();
-  }
-
-  // Galaxyの強さを計算
-  set_galaxy_strength() {
-    // 仮作成
-    this.galaxy_strength = 1;
+  canGalaxy(dimension) {
+    return dimension.bought >= this.requiredAmount();
   }
 
   // Galaxy要求数計算
-  required_amount() {
+  requiredAmount() {
     return 80 + 60 * this.galaxies;
   }
 
   // Galaxy実処理
   galaxy(dimensions, antimatter, tickspeed, boost) {
-    if (!this.can_galaxy(dimensions[7])) {
+    if (!this.canGalaxy(dimensions[7])) {
         return antimatter;
     }
 
@@ -41,7 +34,7 @@ export class Galaxy {
     for (let i = 0; i < dimensions.length; i++) {
         dimensions[i].reset();
         // 倍率の更新
-        dimensions[i].multiplier = dimensions[i].multiplier.multiply(boost.get_multiplier(dimensions[i].tier));
+        dimensions[i].multiplier = dimensions[i].multiplier.multiply(boost.getMultiplier(dimensions[i].tier));
     }
 
     tickspeed.reset();
@@ -52,11 +45,11 @@ export class Galaxy {
   }
 
   // Galaxyの倍率を計算
-  get_galaxy_multiplier() {
+  getGalaxyMultiplier() {
     if(this.galaxies <= 2) {
-        return new BigNumber(1 / (this.base_multipliers[this.galaxies] - 0.02 * this.galaxies * this.galaxy_strength));
+        return new BigNumber(1 / (this.baseMultipliers[this.galaxies] - 0.02 * this.galaxies));
     } else {
-        return new BigNumber(1 / (this.base_multipliers[3] * 0.965 ** ((this.galaxies - 2) * this.galaxy_strength - 2)));
+        return new BigNumber(1 / (this.baseMultipliers[3] * 0.965 ** ((this.galaxies - 2) - 2)));
     }
   }
 

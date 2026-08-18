@@ -4,11 +4,11 @@ import { BigNumber } from "./BigNumber.js";
 export class Dimension {
   // コンストラクタ
   // cost:コスト
-  // cost_multiplier:コスト上昇倍率
+  // costMultiplier:コスト上昇倍率
   // tier:次元数
-  constructor(cost, cost_multiplier, tier) {
+  constructor(cost, costMultiplier, tier) {
     this.cost = cost;
-    this.cost_multiplier = cost_multiplier;
+    this.costMultiplier = costMultiplier;
     this.tier = tier;
 
     // Dimensionの個数
@@ -19,17 +19,17 @@ export class Dimension {
     this.multiplier = new BigNumber(1);
 
     // リセット用に値を保持しておくための変数
-    this._initial_cost = new BigNumber(cost.mantissa, cost.exponent);
-    this._initial_cost_multiplier = new BigNumber(cost_multiplier.mantissa, cost_multiplier.exponent);
+    this._initialCost = new BigNumber(cost.mantissa, cost.exponent);
+    this._initialCostMultiplier = new BigNumber(costMultiplier.mantissa, costMultiplier.exponent);
   }
 
   // 現在のDimensionのコスト
-  current_cost() {
-    return this.cost.multiply(this.cost_multiplier.power(Math.floor(this.bought / 10)));
+  currentCost() {
+    return this.cost.multiply(this.costMultiplier.power(Math.floor(this.bought / 10)));
   }
 
   // countの数だけDimensionを購入
-  buy_dimensions(count) {
+  buyDimensions(count) {
 
     for (let i = 0; i < count; i++) {
         this.amount = this.amount.add(new BigNumber(1));
@@ -43,8 +43,8 @@ export class Dimension {
 
   // リセット処理
   reset() {
-    this.cost = this._initial_cost;
-    this.cost_multiplier = this._initial_cost_multiplier;
+    this.cost = this._initialCost;
+    this.costMultiplier = this._initialCostMultiplier;
 
     this.amount = new BigNumber(0);
     this.bought = 0;
@@ -52,27 +52,27 @@ export class Dimension {
   }
 
   // 次の10の倍数まで買える数を計算
-  next_multiple_need() {
+  nextMultipleNeed() {
     return 10 - this.bought % 10;
   }
 
   // 現在の所持antimatterで買える数を計算
-  buyable_count(antimatter) {
+  buyableCount(antimatter) {
     let count = 0;
 
     // 計算に必要な値のコピーを作成
-    let temp_antimatter = antimatter;
-    let temp_cost = this.current_cost();
-    let temp_bought = this.bought;
+    let tempAntimatter = antimatter;
+    let tempCost = this.currentCost();
+    let tempBought = this.bought;
 
-    while (temp_antimatter.greaterThanOrEqual(temp_cost)) {
-        temp_antimatter = temp_antimatter.subtract(temp_cost);
+    while (tempAntimatter.greaterThanOrEqual(tempCost)) {
+        tempAntimatter = tempAntimatter.subtract(tempCost);
 
         count++;
-        temp_bought++;
+        tempBought++;
 
-        if (temp_bought % 10 === 0) {
-            temp_cost = temp_cost.multiply(this.cost_multiplier);
+        if (tempBought % 10 === 0) {
+            tempCost = tempCost.multiply(this.costMultiplier);
         }
     }
 
@@ -80,8 +80,8 @@ export class Dimension {
   } 
 
   // 購入可能数を計算
-  buy_count(antimatter) {
-    return Math.min(this.next_multiple_need(), this.buyable_count(antimatter));
+  buyCount(antimatter) {
+    return Math.min(this.nextMultipleNeed(), this.buyableCount(antimatter));
   }
 
   // Dimensionの生産量を計算
