@@ -125,8 +125,8 @@ export class BigNumber {
   toDisplayString(digits) {
     if (this.exponent < 3) {
       return (this.mantissa * 10 ** this.exponent).toLocaleString(undefined, {
-        minimumFractionDigits: digits,
-        maximumFractionDigits: digits,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
       });
     }
     return (

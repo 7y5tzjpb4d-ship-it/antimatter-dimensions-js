@@ -60,4 +60,10 @@ export class Sacrifice {
 
     return antimatter;
   }
+
+  // リセット
+  reset() {
+    this.multiplier = new BigNumber(1);
+    this.totalSacrificedAmount = new BigNumber(0);
+  }
 }
