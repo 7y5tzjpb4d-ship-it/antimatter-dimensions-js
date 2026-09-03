@@ -18,6 +18,15 @@ body {
   flex-direction: column;
 }
 
+#game-screen {
+  margin-left: 160px;
+  width: calc(100% - 160px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #antimatter-display {
   font-size: 40px;
   color: #df5050;
@@ -181,4 +190,31 @@ body {
   color: #b67f33;
   background-color: #1d1b22;
   border: 1px solid #b67f33;
+}
+
+.tab-button {
+  padding: 8px 15px;
+  border: 1px solid #df5050;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-button.hide {
+  display: none;
+}
+
+#infinity-tab {
+  border: 1px solid #b67f33;
+  background-color: #000000;
+  color: #b67f33;
+}
+
+#tabs {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
 }

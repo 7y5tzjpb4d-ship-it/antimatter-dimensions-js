@@ -6,122 +6,131 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="main-display" class="screen">
-    <div id="antimatter-display">10 Antimatter</div>
-    <div class="sacrifice" id="sacrifice">
-      <button class="sacrifice-button" id="sacrifice-button">
-        <div id="sacrifice-text">Dimensional Sacrifice Disabled (Requires 5 Dimension Boosts)</div>
-      </button>
-      <button class="max-all-button" id="max-all-button">
-        <div>Max All</div>
-      </button>
-    </div>
-    <div class="tickspeed" id="tickspeed">
-      <button class="tickspeed-button" id="tickspeed-button">
-        <div id="tickspeed-cost">Tickspeed Cost: 1e3</div>
-      </button>
-      <button class="tickspeed-max-button" id="tickspeed-max-button">
-        <div>Buy Max</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension1-row">
-      <div>1st Dimension</div>
-      <div id="dimension1-multiplier">x1</div>
-      <div id="dimension1-amount">0</div>
-      <button class="dimension-buy-button" id="dimension1-buy-button">
-        <div id="dimension1-buy-count">Buy 1</div>
-        <div id="dimension1-cost">Cost: 10 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension2-row">
-      <div>2nd Dimension</div>
-      <div id="dimension2-multiplier">x1</div>
-      <div id="dimension2-amount">0</div>
-      <button class="dimension-buy-button" id="dimension2-buy-button">
-        <div id="dimension2-buy-count">Buy 1</div>
-        <div id="dimension2-cost">Cost: 100 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension3-row">
-      <div>3rd Dimension</div>
-      <div id="dimension3-multiplier">x1</div>
-      <div id="dimension3-amount">0</div>
-      <button class="dimension-buy-button" id="dimension3-buy-button">
-        <div id="dimension3-buy-count">Buy 1</div>
-        <div id="dimension3-cost">Cost: 1e4 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension4-row">
-      <div>4th Dimension</div>
-      <div id="dimension4-multiplier">x1</div>
-      <div id="dimension4-amount">0</div>
-      <button class="dimension-buy-button" id="dimension4-buy-button">
-        <div id="dimension4-buy-count">Buy 1</div>
-        <div id="dimension4-cost">Cost: 1e6 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension5-row">
-      <div>5th Dimension</div>
-      <div id="dimension5-multiplier">x1</div>
-      <div id="dimension5-amount">0</div>
-      <button class="dimension-buy-button" id="dimension5-buy-button">
-        <div id="dimension5-buy-count">Buy 1</div>
-        <div id="dimension5-cost">Cost: 1e9 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension6-row">
-      <div>6th Dimension</div>
-      <div id="dimension6-multiplier">x1</div>
-      <div id="dimension6-amount">0</div>
-      <button class="dimension-buy-button" id="dimension6-buy-button">
-        <div id="dimension6-buy-count">Buy 1</div>
-        <div id="dimension6-cost">Cost: 1e13 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension7-row">
-      <div>7th Dimension</div>
-      <div id="dimension7-multiplier">x1</div>
-      <div id="dimension7-amount">0</div>
-      <button class="dimension-buy-button" id="dimension7-buy-button">
-        <div id="dimension7-buy-count">Buy 1</div>
-        <div id="dimension7-cost">Cost: 1e18 AM</div>
-      </button>
-    </div>
-    <div class="dimension-row" id="dimension8-row">
-      <div>8th Dimension</div>
-      <div id="dimension8-multiplier">x1</div>
-      <div id="dimension8-amount">0</div>
-      <button class="dimension-buy-button" id="dimension8-buy-button">
-        <div id="dimension8-buy-count">Buy 1</div>
-        <div id="dimension8-cost">Cost: 1e24 AM</div>
-      </button>
-    </div>
-    <div class="reset-buttons">
-      <div class="dimension-boost">
-        <div id="dimension-boost-count">Dimension Boost (0)</div>
-        <div id="dimension-boost-requires">Requires: 20 4th Antimatter D</div>
-        <button class="dimension-boost-button" id="dimension-boost-button">
-          <div>Reset your Dimensions to unlock the</div>
-          <div id="dimension-boost-button-requires">4th Dimension and give a ×2.0</div>
-          <div id="dimension-boost-button-multiplier">multiplier to the 1st Dimension</div>
-        </button>
-      </div>
-      <div class="galaxy">
-        <div id="galaxy-count">Antimatter Galaxies (0)</div>
-        <div id="galaxy-requires">Requires: 80 8th Antimatter D</div>
-        <button class="galaxy-button" id="galaxy-button">
-          <div>Reset your Dimensions and Dimension</div>
-          <div>Boosts to increase the power of</div>
-          <div>Tickspeed upgrades</div>
-        </button>
-      </div>
-    </div>
+  <div id="tabs">
+    <button class="tab-button" id="main-tab">Dimensions</button>
+    <button class="tab-button" id="automation-tab">Automation</button>
+    <button class="tab-button" id="infinity-tab">Infinity</button>
+    <button class="tab-button" id="achivement-tab">Achivement</button>
   </div>
 
-  <div id="infinity-display" class="screen hide">
-    <button class="infinity-button" id="infinity-button">
-      <div>Big Crunch</div>
-    </button>
+  <div id="game-screen">
+    <div id="main-display" class="screen">
+      <div id="antimatter-display">10 Antimatter</div>
+      <div class="sacrifice" id="sacrifice">
+        <button class="sacrifice-button" id="sacrifice-button">
+          <div id="sacrifice-text">Dimensional Sacrifice Disabled (Requires 5 Dimension Boosts)</div>
+        </button>
+        <button class="max-all-button" id="max-all-button">
+          <div>Max All</div>
+        </button>
+      </div>
+      <div class="tickspeed" id="tickspeed">
+        <button class="tickspeed-button" id="tickspeed-button">
+          <div id="tickspeed-cost">Tickspeed Cost: 1e3</div>
+        </button>
+        <button class="tickspeed-max-button" id="tickspeed-max-button">
+          <div>Buy Max</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension1-row">
+        <div>1st Dimension</div>
+        <div id="dimension1-multiplier">x1</div>
+        <div id="dimension1-amount">0</div>
+        <button class="dimension-buy-button" id="dimension1-buy-button">
+          <div id="dimension1-buy-count">Buy 1</div>
+          <div id="dimension1-cost">Cost: 10 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension2-row">
+        <div>2nd Dimension</div>
+        <div id="dimension2-multiplier">x1</div>
+        <div id="dimension2-amount">0</div>
+        <button class="dimension-buy-button" id="dimension2-buy-button">
+          <div id="dimension2-buy-count">Buy 1</div>
+          <div id="dimension2-cost">Cost: 100 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension3-row">
+        <div>3rd Dimension</div>
+        <div id="dimension3-multiplier">x1</div>
+        <div id="dimension3-amount">0</div>
+        <button class="dimension-buy-button" id="dimension3-buy-button">
+          <div id="dimension3-buy-count">Buy 1</div>
+          <div id="dimension3-cost">Cost: 1e4 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension4-row">
+        <div>4th Dimension</div>
+        <div id="dimension4-multiplier">x1</div>
+        <div id="dimension4-amount">0</div>
+        <button class="dimension-buy-button" id="dimension4-buy-button">
+          <div id="dimension4-buy-count">Buy 1</div>
+          <div id="dimension4-cost">Cost: 1e6 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension5-row">
+        <div>5th Dimension</div>
+        <div id="dimension5-multiplier">x1</div>
+        <div id="dimension5-amount">0</div>
+        <button class="dimension-buy-button" id="dimension5-buy-button">
+          <div id="dimension5-buy-count">Buy 1</div>
+          <div id="dimension5-cost">Cost: 1e9 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension6-row">
+        <div>6th Dimension</div>
+        <div id="dimension6-multiplier">x1</div>
+        <div id="dimension6-amount">0</div>
+        <button class="dimension-buy-button" id="dimension6-buy-button">
+          <div id="dimension6-buy-count">Buy 1</div>
+          <div id="dimension6-cost">Cost: 1e13 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension7-row">
+        <div>7th Dimension</div>
+        <div id="dimension7-multiplier">x1</div>
+        <div id="dimension7-amount">0</div>
+        <button class="dimension-buy-button" id="dimension7-buy-button">
+          <div id="dimension7-buy-count">Buy 1</div>
+          <div id="dimension7-cost">Cost: 1e18 AM</div>
+        </button>
+      </div>
+      <div class="dimension-row" id="dimension8-row">
+        <div>8th Dimension</div>
+        <div id="dimension8-multiplier">x1</div>
+        <div id="dimension8-amount">0</div>
+        <button class="dimension-buy-button" id="dimension8-buy-button">
+          <div id="dimension8-buy-count">Buy 1</div>
+          <div id="dimension8-cost">Cost: 1e24 AM</div>
+        </button>
+      </div>
+      <div class="reset-buttons">
+        <div class="dimension-boost">
+          <div id="dimension-boost-count">Dimension Boost (0)</div>
+          <div id="dimension-boost-requires">Requires: 20 4th Antimatter D</div>
+          <button class="dimension-boost-button" id="dimension-boost-button">
+            <div>Reset your Dimensions to unlock the</div>
+            <div id="dimension-boost-button-requires">4th Dimension and give a ×2.0</div>
+            <div id="dimension-boost-button-multiplier">multiplier to the 1st Dimension</div>
+          </button>
+        </div>
+        <div class="galaxy">
+          <div id="galaxy-count">Antimatter Galaxies (0)</div>
+          <div id="galaxy-requires">Requires: 80 8th Antimatter D</div>
+          <button class="galaxy-button" id="galaxy-button">
+            <div>Reset your Dimensions and Dimension</div>
+            <div>Boosts to increase the power of</div>
+            <div>Tickspeed upgrades</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="infinity-display" class="screen hide">
+      <button class="infinity-button" id="infinity-button">
+        <div>Big Crunch</div>
+      </button>
+    </div>
   </div>
 
   <script src="js/main.js" type="module"></script>

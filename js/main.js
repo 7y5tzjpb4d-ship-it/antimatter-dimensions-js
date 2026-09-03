@@ -11,6 +11,8 @@ let antimatter = new BigNumber(10);
 const mainDisplay = document.getElementById("main-display");
 const antimatterDisplay = document.getElementById("antimatter-display");
 const infinityDisplay = document.getElementById("infinity-display");
+const tabs = document.querySelectorAll(".tab-button");
+const infinityTab = document.getElementById("infinity-tab");
 
 const dimensionMultiplier = [
   document.getElementById("dimension1-multiplier"),
@@ -221,6 +223,9 @@ function render() {
 
   if (!infinity.canInfinity(antimatter)) {
     mainDisplay.classList.remove("hide");
+    tabs.forEach(screen => {
+      screen.classList.remove("hide");
+    });
     infinityDisplay.classList.add("hide");
     // 必要な値をあらかじめ取得
     const tier = dimensionBoost.maxUnlockedTier();
@@ -352,8 +357,19 @@ function render() {
     } else {
       sacrificeButton.classList.add("cannot-reset");
     }
+    
+    // タブボタンの描画
+    if (infinity.firstInfinityFlg) {
+      infinityTab.classList.add("hide");
+    } else {
+      infinityTab.classList.remove("hide");
+    }
+
   } else {
     mainDisplay.classList.add("hide");
+    tabs.forEach(screen => {
+      screen.classList.add("hide");
+    });
     infinityDisplay.classList.remove("hide");
   }
 }

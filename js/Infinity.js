@@ -6,6 +6,7 @@ export class Infinity {
     constructor() {
         this.infinities = new BigNumber(0);
         this.IP = new BigNumber(0);
+        this.firstInfinityFlg = true;
     }
 
     // Infinity可能判定
@@ -33,6 +34,10 @@ export class Infinity {
         galaxy.reset();
 
         sacrifice.reset();
+
+        if (this.firstInfinityFlg) {
+            this.firstInfinityFlg = false;
+        }
 
         return new BigNumber(10);
     }
